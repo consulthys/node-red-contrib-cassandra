@@ -35,9 +35,11 @@ module.exports = function (RED) {
                 node.connecting = false;
                 if (err) {
                     node.error(err);
+                    node.status({fill:"red",shape:"ring",text:"disconnected"});
                     node.tick = setTimeout(doConnect, 30000);
                 } else {
                     node.connected = true;
+                    node.status({fill:"green",shape:"dot",text:"connected"});
                 }
             });
 
@@ -100,6 +102,7 @@ module.exports = function (RED) {
                     var params = msg.payload || [];
                     node.mydbConfig.connection.execute(msg.topic, params, {prepare: true}, resCallback);
                 }
+                node.status({fill:"green",shape:"dot",text:"executing..."});
             });
         }
         else {
