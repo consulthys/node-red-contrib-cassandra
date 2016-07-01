@@ -61,6 +61,7 @@ module.exports = function (RED) {
             } else {
                 done();
             }
+            node.status({fill:"red",shape:"ring",text:"disconnected"});
         });
     }
     RED.nodes.registerType("CassandraDatabase",CassandraNode, {
@@ -98,7 +99,7 @@ module.exports = function (RED) {
                     node.log("Batching " + msg.topic.length + " CQL queries");
                     node.mydbConfig.connection.batch(msg.topic, {prepare: true}, resCallback);
                 } else {
-                    node.log("Executing CQL query: ", msg.topic);
+                    node.log("Executing CQL query: " + msg.topic);
                     var params = msg.payload || [];
                     node.mydbConfig.connection.execute(msg.topic, params, {prepare: true}, resCallback);
                 }
